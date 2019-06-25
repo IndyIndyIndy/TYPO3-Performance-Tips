@@ -82,4 +82,12 @@ $GLOBALS['TYPO3_CONF_VARS']['LOG']['TYPO3']['CMS']['deprecations']['writerConfig
 ### Typoscript Conditions 
 + Each single TypoScript Condition means a new cache variant of the page. (TYPO3 will create one cache for the page, if the condition is met and one if not.) To avoid bloating up the cache, use such conditions with care and remove any unnecessary condition stubs in your TypoScript, that are not in use.
 
+### config.cache
++ This option determines the lifetime of a pages cache depending on configured db records and their start/stop time. This can for instance be useful on a news page: If a new news record is about to be shown, you will want the old page cache to automatically invalidate. 
 
+``` php
+config.cache.10 = tx_news_domain_model_news:11
+```
++ This will apply the cache option to the page with the `id`, which then takes the news records on the sysfolder with the id `11` in consideration for the cache lifetime.
+More info:
+https://docs.typo3.org/m/typo3/reference-typoscript/master/en-us/Setup/Config/Index.html#cache
