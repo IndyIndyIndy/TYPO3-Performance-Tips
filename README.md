@@ -25,6 +25,7 @@ A few tips to optimize and improve the performance in TYPO3 websites
 ### Caching Framework
 + By default, many caching tables (like `extbase_datamapfactory_datamap`, `extbase_reflection`, `cf_*`, …) are stored in the default DB connection (usually MariaDB/MySQL). In larger projects with fast growing cache tables, to switch to a `RedisBackend` with reasonable amounts of memory assigned to redis.
 + There are several other Caching Backends available (`Typo3DatabaseBackend`, `MemcachedBackend`, `ApcBackend`, and others as well as the possibility to implement your own). The official documentation provides detailled information on how and when to use them and how to properly configure the underlying mechanisms:
+
 https://docs.typo3.org/m/typo3/reference-coreapi/master/en-us/ApiOverview/CachingFramework/FrontendsBackends/Index.html#cache-backends
 
 ### $GLOBALS['TSFE']->set_no_cache()
@@ -54,7 +55,7 @@ https://docs.typo3.org/m/typo3/reference-coreapi/master/en-us/ApiOverview/Cachin
 
 ## TYPO3 Backend
 ### TSConfig: TCEMAIN.clearCacheCmd
-+ Usually used to automatically clear caches for configured pages, when editing records on another page in the backend. (like news records in a sysfolder)
++ Usually used to automatically clear caches for configured pages, when editing records on another page in the backend (like news records in a sysfolder).
 Can be configured with `all` or `pages` to automatically clear **all** caches for every single page. Use this with care. 
 
 ### pages.no_cache
@@ -65,7 +66,9 @@ Can be configured with `all` or `pages` to automatically clear **all** caches fo
 
 ### Log Tables.
 + Tables like `sys_log`, `sys_history`, etc can grow very large with time and create a bottleneck in the db. Make sure to create a job that regularly truncates old records from these tables. (like the cleanup-scheduler tasks)	
-+ Especially deprecation logs should never be enabled on production systems, as they tend to grow very quickly. Even after fixing all the deprecation warnings in your extensions, you will usually end up with lots of deprecation warnings from third-party extensions that you cannot simply fix (which often happen because these extensions need to support a wide variety of TYPO3 versions). You can disable the deprecation log in TYPO3 9 in your `ext_localconf.php` with the following code:
++ Especially deprecation logs should never be enabled on production systems, as they tend to grow very quickly. Even after fixing all the deprecation warnings in your extensions, you will usually end up with lots of deprecation warnings from third-party extensions that you cannot simply fix (which often happen because these extensions need to support a wide variety of TYPO3 versions). 
+
+You can disable the deprecation log in TYPO3 9 in your `ext_localconf.php` with the following code:
 
 ``` php
 $GLOBALS['TYPO3_CONF_VARS']['LOG']['TYPO3']['CMS']['deprecations']['writerConfiguration'][\TYPO3\CMS\Core\Log\LogLevel::NOTICE] = [];
