@@ -45,9 +45,6 @@ ____
 ### Extbase ORM vs Doctrine Querybuilder
 + The usage of Extbase repositories with its Object Relational Mapping and DDD design principles can be a very convenient way to handle data objects and quickly code and create a running project in a well-structured way. However, using an ORM and having to build the data objects with all its complex relationships always means a performance tradeoff. If domain objects are not needed and performance critical data handling is required (like import/exports of large data sets), you should rather use the Doctrine Querybuilder for direct db requests or the TYPO3 Core Engine.
 
-### LIKE ‘%FOOBAR’
-+ Please, for everything that is good, do not use a statment like `LIKE ‘%FOOBAR’` in your sql query. This will do a full db scan and not scale at all.
-
 ____
 
 ## Fluid
@@ -64,6 +61,8 @@ ____
 ____
 
 ## Server / Database
+### LIKE ‘%FOOBAR’
++ Please, for everything that is good, do not use a statment like `LIKE ‘%FOOBAR’` in your sql query. This will do a full db scan and not scale at all.
 
 ____
 
