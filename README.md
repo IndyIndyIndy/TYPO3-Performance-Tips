@@ -3,7 +3,7 @@ A few tips to optimize and improve the performance in TYPO3 websites
 
 ## Extension Development
 ### Caching Extbase Plugins
-+ When configuring an extbase plugin, you can specify the allowed Controller actions as well as which actions should not be cached at all. (which will internally create a `USER_INT` object in TYPO3):
++ When configuring an Extbase plugin, you can specify the allowed Controller actions as well as which actions should not be cached at all. (which will internally create a `USER_INT` object in TYPO3):
 
 ``` php
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
@@ -19,7 +19,7 @@ A few tips to optimize and improve the performance in TYPO3 websites
 );
 ```
 + I often stumble upon plugin configurations, that were initially set up as completely uncached for each action during development and never adapted after that. If your action doesn’t involve server-side user interaction (or something similar), it is probably better off cached.
-+ Sometimes it can be useful to deliver a completely cached web page and load uncached parts of the page via ajax. (The trade off would be more http requests in the frontend)
++ Sometimes it can be useful to deliver a completely cached web page and load uncached parts of the page via ajax. (The tradeoff would be more http requests in the frontend)
 + If your action needs to be uncached, but also contains computing-intensive parts, that can be cached, consider using the caching framework to cache and fetch these parts from a CacheBackend. See: https://docs.typo3.org/typo3cms/CoreApiReference/ApiOverview/CachingFramework/Developer/Index.html?highlight=cache
 
 ### Caching Framework
@@ -33,18 +33,18 @@ https://docs.typo3.org/m/typo3/reference-coreapi/master/en-us/ApiOverview/Cachin
 
 ## Extbase ORM & Doctrine
 ### Eager loading and lazy loading
-+ There are two opposing ways for optimizing the fetching of data objects. - Lazy loading and eager loading with their pros and cons.
-+ Lazy loading is achieved in TYPO3 Extbase by adding the annotation `@TYPO3\CMS\Extbase\Annotation\ORM\Lazy` to a property in your model. This means, that the underlying objects are not automatically fetched, when the parent object is created by the ORM. This is improves performance, if your object has many children objects, but you do not need to initally access them. Lazy loading instead adds a “proxy” class as a placeholder that automatically fetches the objects once you try to access them (a new DB request). Depending on the way you use and access your objects, this means switch out a single db request with multiple joins with many individual requests, leading to much slower performance. This is a case, where Eager loading (fetch all relations at once) would be a better choice. 
++ There are two opposing ways for optimizing the fetching of data objects. - Lazy Loading and Eager Loading with their pros and cons.
++ Lazy loading is achieved in TYPO3 Extbase by adding the annotation `@TYPO3\CMS\Extbase\Annotation\ORM\Lazy` to a property in your model. This means, that the underlying objects are not automatically fetched, when the parent object is created by the ORM. This is improves performance, if your object has many children objects, but you do not need to initally access them. Lazy Loading instead adds a “proxy” class as a placeholder that automatically fetches the objects once you try to access them (a new DB request). Depending on the way you use and access your objects, this means switch out a single db request with multiple joins with many individual requests, leading to much slower performance. This is a case, where Eager Loading (fetch all relations at once) would be a better choice. 
 
 ### Extbase ORM vs Doctrine Querybuilder
-+ The usage of extbase repositories with its object relational mapping and DDD design principles can be a very convenient way to handle data objects and quickly code and create a running project in a well-structured way. However, using an ORM and having to build the data objects with all its complex relationships always means a performance tradeoff. If domain objects are not needed and performance critical data handling is required (like import/exports of large data sets), you should rather use the Doctrine Querybuilder for direct db requests or the TYPO3 Core Engine.
++ The usage of Extbase repositories with its Object Relational Mapping and DDD design principles can be a very convenient way to handle data objects and quickly code and create a running project in a well-structured way. However, using an ORM and having to build the data objects with all its complex relationships always means a performance tradeoff. If domain objects are not needed and performance critical data handling is required (like import/exports of large data sets), you should rather use the Doctrine Querybuilder for direct db requests or the TYPO3 Core Engine.
 
 ## Fluid
 ### Compilable Viewhelpers
-+ Make sure your custom viewhelpers are using the `CompilableInterface`. This makes the viewhelper static, avoids the instantiation of many instances of the viewhelper class (which can easily happening if it is placed inside a <f:for>-loop for instance), improving the performance of the template parsing.
++ Make sure your custom Viewhelpers are using the `CompilableInterface`. This makes the Viewhelper static, avoids the instantiation of many instances of the viewhelper class (which can easily happening if it is placed inside a <f:for>-loop for instance), improving the performance of the template parsing.
 
 ### Cache.Disable ViewHelper
-+ Beware of the ViewHelper `<f:cache.disable />`. If used, it will disable the caching and compiling of the complete fluid template (not just the single one where the viewhelper is used) to PHP classes, slowing down the template building.
++ Beware of the ViewHelper `<f:cache.disable />`. If used, it will disable the caching and compiling of the complete Fluid template (not just the single one where the Viewhelper is used) to PHP classes, slowing down the template building.
 
 
 
