@@ -26,6 +26,7 @@ A few tips to optimize and improve the performance in TYPO3 websites
 ### Caching Framework
 + By default, many caching tables (like `extbase_datamapfactory_datamap`, `extbase_reflection`, `cf_*`, …) are stored in the default DB connection (usually MariaDB/MySQL). In larger projects with fast growing cache tables, to switch to a `RedisBackend` with reasonable amounts of memory assigned to redis.
 + There are several other Caching Backends available (`Typo3DatabaseBackend`, `MemcachedBackend`, `ApcBackend`, and others as well as the possibility to implement your own). 
++ On Linux servers with newer file systems and SSDs, even using a file based CacheBackend could possibly improve the performance compared to the default `Typo3DatabaseBackend`.
 + The official documentation provides detailled information on how and when to use them and how to properly configure the underlying mechanisms:
 https://docs.typo3.org/m/typo3/reference-coreapi/master/en-us/ApiOverview/CachingFramework/FrontendsBackends/Index.html#cache-backends
 
