@@ -1,6 +1,8 @@
 # TYPO3 Performance Tips
 A few tips to optimize and improve the performance in TYPO3 websites
 
+____
+
 ## Extension Development
 ### Caching Extbase Plugins
 + When configuring an Extbase plugin, you can specify the allowed Controller actions as well as which actions should not be cached at all. (which will internally create a `USER_INT` object in TYPO3):
@@ -33,6 +35,8 @@ https://docs.typo3.org/m/typo3/reference-coreapi/master/en-us/ApiOverview/Cachin
 ### $GLOBALS['TSFE']->set_no_cache()
 + Make sure, that your extensions are not using `$GLOBALS['TSFE']->set_no_cache()` everywhere, as this will completely disable the caching. (often seen in really old extensions during a TYPO3 Upgrade)
 
+____
+
 ## Extbase ORM & Doctrine
 ### Eager loading and lazy loading
 + There are two opposing ways for optimizing the fetching of data objects. - Lazy Loading and Eager Loading with their pros and cons.
@@ -41,6 +45,8 @@ https://docs.typo3.org/m/typo3/reference-coreapi/master/en-us/ApiOverview/Cachin
 ### Extbase ORM vs Doctrine Querybuilder
 + The usage of Extbase repositories with its Object Relational Mapping and DDD design principles can be a very convenient way to handle data objects and quickly code and create a running project in a well-structured way. However, using an ORM and having to build the data objects with all its complex relationships always means a performance tradeoff. If domain objects are not needed and performance critical data handling is required (like import/exports of large data sets), you should rather use the Doctrine Querybuilder for direct db requests or the TYPO3 Core Engine.
 
+____
+
 ## Fluid
 ### Compilable Viewhelpers
 + Make sure your custom Viewhelpers are using the `CompilableInterface`. This makes the Viewhelper static, avoids the instantiation of many instances of the viewhelper class (which can easily happening if it is placed inside a <f:for>-loop for instance), improving the performance of the template parsing.
@@ -48,11 +54,15 @@ https://docs.typo3.org/m/typo3/reference-coreapi/master/en-us/ApiOverview/Cachin
 ### cache.disable ViewHelper
 + Beware of the ViewHelper `<f:cache.disable />`. If used, it will disable the caching and compiling of the complete Fluid template (not just the single one where the Viewhelper is used) to PHP classes, slowing down the template building.
 
+____
+
 ## Install Tool
 
+____
 
 ## Server / Database
 
+____
 
 ## TYPO3 Backend
 ### TSConfig: TCEMAIN.clearCacheCmd
@@ -73,6 +83,8 @@ You can disable the deprecation log in TYPO3 9 in your `ext_localconf.php` with 
 ``` php
 $GLOBALS['TYPO3_CONF_VARS']['LOG']['TYPO3']['CMS']['deprecations']['writerConfiguration'][\TYPO3\CMS\Core\Log\LogLevel::NOTICE] = [];
 ```
+
+____
 
 ## TypoScript
 ### config.no_cache = 1
