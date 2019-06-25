@@ -104,3 +104,7 @@ https://docs.typo3.org/m/typo3/reference-typoscript/master/en-us/Setup/Config/In
 
 ### Typoscript Conditions 
 + Each single TypoScript Condition means a new cache variant of the page. (TYPO3 will create one cache for the page, if the condition is met and one if not.) To avoid bloating up the cache, use such conditions with care and remove any unnecessary condition stubs in your TypoScript, that are not in use.
+
+### COA_INT / USER_INT
++ Try to limit your \*_INT objects in TypoScript. These are basically uncached components in your website. When present, TYPO3 basically first creates a static (cached) version of the page and inserts placeholder comments in the html output that mark all locations, where a \*_INT object is present. After that, each single of these objects is created from scratch (uncached). This considerably slows down page generation compared to a fully cached page.
++ Be especially careful, when using \*_INT objects inside a `FLUIDTEMPLATE`. If you place such an object in the section `page.10.variables`, this would **apply the uncached object for every single page, even if it is not actually used in the fluid template**, slowing down every single page in your frontend.
