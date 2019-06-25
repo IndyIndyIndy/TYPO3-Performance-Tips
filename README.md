@@ -138,6 +138,7 @@ The adminpanel can help with analyzing some performance bottlenecks in your webs
 + An icon at the lower right in the frontend appear, with which you can open the adminpanel.
 + The `Info module` shows you the server-side rendering time of the page in milliseconds and if the current page was cached.
 + The label `Count of USER_INT objects` shows you the admount of \*_INT objects on the page. If at least one is present, the page is not cached. Try to avoid these unless absolutely necessary.
++ In the `Debug module` you can see a list of all DB requests and how much time every single one needed for the current page. This can help you find bottlenecks in the DB and to get information, which table fields could benefit from an index.
 
 ### Finding \*_INT objects
 + `composer require christianessl/adminpanel_int`
