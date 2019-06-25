@@ -60,7 +60,11 @@ ____
 ____
 
 ## Install Tool
+### [FE][pageNotFoundOnCHashError]
+If set to `true` and a page request in the frontend fails due to a cHash comparison fail (the calculated chash does not match the actual get parameters in the url), TYPO3 will trigger a 404 error. This is the recommended setting, as with `false` TYPO3 would show the page instead with no caching. You should rather fix your urls if cHash errors occur on the page.
 
+## [FE][disableNoCacheParameter]
+If set to `true`, the infamous `&no_cache=1` will do nothing at all, if present in any url (Check your code, if this change doesn't break anything).
 ____
 
 ## Server / Database
