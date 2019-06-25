@@ -31,7 +31,9 @@ https://docs.typo3.org/m/typo3/reference-coreapi/master/en-us/ApiOverview/Cachin
 
 ## Extbase ORM & Doctrine
 ___
-
+### Eager loading and lazy loading
++ There are two opposing ways for optimizing the fetching of data objects. - Lazy loading and eager loading with their pros and cons.
++ Lazy loading is achieved in TYPO3 Extbase by adding the annotation `@TYPO3\CMS\Extbase\Annotation\ORM\Lazy` to a property in your model. This means, that the underlying objects are not automatically fetched, when the parent object is created by the ORM. This is improves performance, if your object has many children objects, but you do not need to initally access them. Lazy loading instead adds a “proxy” class as a placeholder that automatically fetches the objects once you try to access them (a new DB request). Depending on the way you use and access your objects, this means switch out a single db request with multiple joins with many individual requests, leading to much slower performance. This is a case, where Eager loading (fetch all relations at once) would be a better choice. 
 
 ## Fluid
 ___
