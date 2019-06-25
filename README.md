@@ -37,6 +37,12 @@ ___
 
 ## Fluid
 ___
+### Compilable Viewhelpers
++ Make sure your custom viewhelpers are using the CompilableInterface. This makes the viewhelper static, avoids the instantiation of many instances of the viewhelper class (which can easily happening if it is placed inside a <f:for>-loop for instance), improving the performance of the template parsing.
+
+### Cache.Disable ViewHelper
++ Beware of the ViewHelper <f:cache.disable />. If used, it will disable the caching and compiling of the complete fluid template (not just the single one where the viewhelper is used) to a php classes, slowing down the template building.
+
 
 
 ## Install Tool
