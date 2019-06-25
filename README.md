@@ -88,6 +88,12 @@ $GLOBALS['TYPO3_CONF_VARS']['LOG']['TYPO3']['CMS']['deprecations']['writerConfig
 ``` php
 config.cache.10 = tx_news_domain_model_news:11
 ```
-+ This will apply the cache option to the page with the `id`, which then takes the news records on the sysfolder with the id `11` in consideration for the cache lifetime.
++ This will apply the cache option to the page with the `id`, which then takes the news records in the sysfolder with the id `11` in consideration for the cache lifetime.
 More info:
 https://docs.typo3.org/m/typo3/reference-typoscript/master/en-us/Setup/Config/Index.html#cache
+
+### config.cache_clearAtMidnight
++ With this setting set to `1`, the cache will always expire at midnight.
+
+### config.cache_period
++ Amount of seconds until a page cache should be invalited. `604800` for instance would keep the page cache for a week.
