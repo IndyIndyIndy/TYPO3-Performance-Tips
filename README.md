@@ -79,4 +79,7 @@ $GLOBALS['TYPO3_CONF_VARS']['LOG']['TYPO3']['CMS']['deprecations']['writerConfig
 ### config.linkVars 
 If linkVars are used (a classic example is the L parameter before TYPO3 9), you can and should limit the range of allowed values. Like: `config.linkVars = L(0-3)`. These linkVars are automatically added to each link, if present in the current url, and can potentially flood the cache, if no range limit is present.
 
+### Typoscript Conditions 
+Each single TypoScript Condition means a new cache variant of the page. (TYPO3 will create one cache for the page, if the condition is met and one if not.) To avoid bloating up the cache, use such conditions with care and remove any unnecessary condition stubs in your TypoScript, that are not in use.
+
 
