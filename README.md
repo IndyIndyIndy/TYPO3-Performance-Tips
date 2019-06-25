@@ -76,3 +76,7 @@ $GLOBALS['TYPO3_CONF_VARS']['LOG']['TYPO3']['CMS']['deprecations']['writerConfig
 + This well-known setting completely disabled caching in the frontend. Usage of this option should be discouraged, but still, I often see this option applied in older TYPO3 websites. (After the customer complained about the horrible performance of the website)
 + You can hide this option behind TS Conditions like `[applicationContext == "Development"]`, to only disable caching on development instances, but even then this can lead to easily overlooked bugs, when only testing features uncached, that, in production, should be cached.
 
+### config.linkVars 
+If linkVars are used (a classic example is the L parameter before TYPO3 9), you can and should limit the range of allowed values. Like: `config.linkVars = L(0-3)`. These linkVars are automatically added to each link, if present in the current url, and can potentially flood the cache, if no range limit is present.
+
+
