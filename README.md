@@ -45,6 +45,9 @@ ____
 ### Extbase ORM vs Doctrine Querybuilder
 + The usage of Extbase repositories with its Object Relational Mapping and DDD design principles can be a very convenient way to handle data objects and quickly code and create a running project in a well-structured way. However, using an ORM and having to build the data objects with all its complex relationships always means a performance tradeoff. If domain objects are not needed and performance critical data handling is required (like import/exports of large data sets), you should rather use the Doctrine Querybuilder for direct db requests or the TYPO3 Core Engine.
 
+### Indices for orderBy fields
++ Look at the `$defaultOrderings` array in your Extbase repositories. These db fields could probably benefit from db indices (configured in your ext_tables.sql).
+
 ____
 
 ## Fluid
