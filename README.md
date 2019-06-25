@@ -65,6 +65,7 @@ If set to `true` and a page request in the frontend fails due to a cHash compari
 
 ## [FE][disableNoCacheParameter]
 If set to `true`, the infamous `&no_cache=1` will do nothing at all, if present in any url (Check your code, if this change doesn't break anything).
+
 ____
 
 ## Server / Database
