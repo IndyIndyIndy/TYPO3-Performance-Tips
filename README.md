@@ -1,4 +1,4 @@
-# TYPO3-Performance-Tips
+# TYPO3 Performance Tips
 A few tips to optimize and improve the performance in TYPO3 websites
 
 ## Extension Development
@@ -29,7 +29,6 @@ https://docs.typo3.org/m/typo3/reference-coreapi/master/en-us/ApiOverview/Cachin
 
 ### $GLOBALS['TSFE']->set_no_cache()
 + Make sure, that your extensions are not using `$GLOBALS['TSFE']->set_no_cache()` everywhere, as this will completely disable the caching. (often seen in really old extensions during a TYPO3 Upgrade)
-
 
 ## Extbase ORM & Doctrine
 ### Eager loading and lazy loading
@@ -72,5 +71,8 @@ You can disable the deprecation log in TYPO3 9 in your `ext_localconf.php` with 
 $GLOBALS['TYPO3_CONF_VARS']['LOG']['TYPO3']['CMS']['deprecations']['writerConfiguration'][\TYPO3\CMS\Core\Log\LogLevel::NOTICE] = [];
 ```
 
-
 ## TypoScript
+### config.no_cache = 1
++ This well-known setting completely disabled caching in the frontend. Usage of this option should be discouraged, but still, I often see this option applied in older TYPO3 websites. (After the customer complained about the horrible performance of the website)
++ You can hide this option behind TS Conditions like `[applicationContext == "Development"]`, to only disable caching on development instances, but even then this can lead to easily overlooked bugs, when only testing features uncached, that, in production, should be cached.
+
