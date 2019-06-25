@@ -79,9 +79,6 @@ $GLOBALS['TYPO3_CONF_VARS']['LOG']['TYPO3']['CMS']['deprecations']['writerConfig
 ### config.linkVars 
 + If linkVars are used (a classic example is the L parameter before TYPO3 9), you can and should limit the range of allowed values. Like: `config.linkVars = L(0-3)`. These linkVars are automatically added to each link, if present in the current url, and can potentially flood the cache, if no range limit is present.
 
-### Typoscript Conditions 
-+ Each single TypoScript Condition means a new cache variant of the page. (TYPO3 will create one cache for the page, if the condition is met and one if not.) To avoid bloating up the cache, use such conditions with care and remove any unnecessary condition stubs in your TypoScript, that are not in use.
-
 ### config.cache
 + This option determines the lifetime of a pages cache depending on configured db records and their start/stop time. This can for instance be useful on a news page: If a new news record is about to be shown, you will want the old page cache to automatically invalidate. 
 
@@ -97,3 +94,9 @@ https://docs.typo3.org/m/typo3/reference-typoscript/master/en-us/Setup/Config/In
 
 ### config.cache_period
 + Amount of seconds until a page cache should be invalited. `604800` for instance would keep the page cache for a week.
+
+### config.sendCacheHeaders 
++ If set to `1`, TYPO3 will automatically send several cache headers (`Last-Modified: x`, `Expires: x`, `ETag`, `Cache-Control`, `Pragma: public`) for static pages to the browser. Only if the page is cached (No USER_INT objects) and no be_user or fe_user is logged in! See: https://docs.typo3.org/m/typo3/reference-typoscript/master/en-us/Setup/Config/Index.html#sendcacheheaders
+
+### Typoscript Conditions 
++ Each single TypoScript Condition means a new cache variant of the page. (TYPO3 will create one cache for the page, if the condition is met and one if not.) To avoid bloating up the cache, use such conditions with care and remove any unnecessary condition stubs in your TypoScript, that are not in use.
