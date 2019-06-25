@@ -20,11 +20,13 @@ A few tips to optimize and improve the performance in TYPO3 websites
 ```
 + I often stumble upon plugin configurations, that were initially set up as completely uncached for each action during development and never adapted after that. If your action doesn’t involve server-side user interaction (or something similar), it is probably better off cached.
 + Sometimes it can be useful to deliver a completely cached web page and load uncached parts of the page via ajax. (The tradeoff would be more http requests in the frontend)
-+ If your action needs to be uncached, but also contains computing-intensive parts, that can be cached, consider using the caching framework to cache and fetch these parts from a CacheBackend. See: https://docs.typo3.org/typo3cms/CoreApiReference/ApiOverview/CachingFramework/Developer/Index.html?highlight=cache
++ If your action needs to be uncached, but also contains computing-intensive parts, that can be cached, consider using the caching framework to cache and fetch these parts from a CacheBackend. 
++ See: https://docs.typo3.org/typo3cms/CoreApiReference/ApiOverview/CachingFramework/Developer/Index.html?highlight=cache
 
 ### Caching Framework
 + By default, many caching tables (like `extbase_datamapfactory_datamap`, `extbase_reflection`, `cf_*`, …) are stored in the default DB connection (usually MariaDB/MySQL). In larger projects with fast growing cache tables, to switch to a `RedisBackend` with reasonable amounts of memory assigned to redis.
-+ There are several other Caching Backends available (`Typo3DatabaseBackend`, `MemcachedBackend`, `ApcBackend`, and others as well as the possibility to implement your own). The official documentation provides detailled information on how and when to use them and how to properly configure the underlying mechanisms:
++ There are several other Caching Backends available (`Typo3DatabaseBackend`, `MemcachedBackend`, `ApcBackend`, and others as well as the possibility to implement your own). 
++ The official documentation provides detailled information on how and when to use them and how to properly configure the underlying mechanisms:
 https://docs.typo3.org/m/typo3/reference-coreapi/master/en-us/ApiOverview/CachingFramework/FrontendsBackends/Index.html#cache-backends
 
 ### $GLOBALS['TSFE']->set_no_cache()
@@ -86,7 +88,7 @@ $GLOBALS['TYPO3_CONF_VARS']['LOG']['TYPO3']['CMS']['deprecations']['writerConfig
 config.cache.10 = tx_news_domain_model_news:11
 ```
 + This will apply the cache option to the page with the `id`, which then takes the news records in the sysfolder with the id `11` in consideration for the cache lifetime.
-More info:
++ More info:
 https://docs.typo3.org/m/typo3/reference-typoscript/master/en-us/Setup/Config/Index.html#cache
 
 ### config.cache_clearAtMidnight
@@ -96,7 +98,8 @@ https://docs.typo3.org/m/typo3/reference-typoscript/master/en-us/Setup/Config/In
 + Amount of seconds until a page cache should be invalited. `604800` for instance would keep the page cache for a week.
 
 ### config.sendCacheHeaders 
-+ If set to `1`, TYPO3 will automatically send several cache headers (`Last-Modified: x`, `Expires: x`, `ETag`, `Cache-Control`, `Pragma: public`) for static pages to the browser. Only if the page is cached (No USER_INT objects) and no be_user or fe_user is logged in! See: https://docs.typo3.org/m/typo3/reference-typoscript/master/en-us/Setup/Config/Index.html#sendcacheheaders
++ If set to `1`, TYPO3 will automatically send several cache headers (`Last-Modified: x`, `Expires: x`, `ETag`, `Cache-Control`, `Pragma: public`) for static pages to the browser. Only if the page is cached (No USER_INT objects) and no be_user or fe_user is logged in! 
++ See: https://docs.typo3.org/m/typo3/reference-typoscript/master/en-us/Setup/Config/Index.html#sendcacheheaders
 
 ### Typoscript Conditions 
 + Each single TypoScript Condition means a new cache variant of the page. (TYPO3 will create one cache for the page, if the condition is met and one if not.) To avoid bloating up the cache, use such conditions with care and remove any unnecessary condition stubs in your TypoScript, that are not in use.
