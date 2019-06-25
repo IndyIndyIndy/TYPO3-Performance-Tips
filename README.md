@@ -28,6 +28,9 @@ ___
 + There are several other Caching Backends available (`Typo3DatabaseBackend`, `MemcachedBackend`, `ApcBackend`, and others as well as the possibility to implement your own). The official documentation provides detailled information on how and when to use them and how to properly configure the underlying mechanisms:
 https://docs.typo3.org/m/typo3/reference-coreapi/master/en-us/ApiOverview/CachingFramework/FrontendsBackends/Index.html#cache-backends
 
+### $GLOBALS['TSFE']->set_no_cache()
++ Make sure, that your extensions are not using `$GLOBALS['TSFE']->set_no_cache()` everywhere, as this will completely disable the caching. (often seen in really old extensions during a TYPO3 Upgrade)
+
 
 ## Extbase ORM & Doctrine
 ___
@@ -38,10 +41,10 @@ ___
 ## Fluid
 ___
 ### Compilable Viewhelpers
-+ Make sure your custom viewhelpers are using the CompilableInterface. This makes the viewhelper static, avoids the instantiation of many instances of the viewhelper class (which can easily happening if it is placed inside a <f:for>-loop for instance), improving the performance of the template parsing.
++ Make sure your custom viewhelpers are using the `CompilableInterface`. This makes the viewhelper static, avoids the instantiation of many instances of the viewhelper class (which can easily happening if it is placed inside a <f:for>-loop for instance), improving the performance of the template parsing.
 
 ### Cache.Disable ViewHelper
-+ Beware of the ViewHelper <f:cache.disable />. If used, it will disable the caching and compiling of the complete fluid template (not just the single one where the viewhelper is used) to a php classes, slowing down the template building.
++ Beware of the ViewHelper `<f:cache.disable />`. If used, it will disable the caching and compiling of the complete fluid template (not just the single one where the viewhelper is used) to PHP classes, slowing down the template building.
 
 
 
