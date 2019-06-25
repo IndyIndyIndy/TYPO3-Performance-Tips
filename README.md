@@ -43,10 +43,8 @@ https://docs.typo3.org/m/typo3/reference-coreapi/master/en-us/ApiOverview/Cachin
 ### Compilable Viewhelpers
 + Make sure your custom Viewhelpers are using the `CompilableInterface`. This makes the Viewhelper static, avoids the instantiation of many instances of the viewhelper class (which can easily happening if it is placed inside a <f:for>-loop for instance), improving the performance of the template parsing.
 
-### Cache.Disable ViewHelper
+### cache.disable ViewHelper
 + Beware of the ViewHelper `<f:cache.disable />`. If used, it will disable the caching and compiling of the complete Fluid template (not just the single one where the Viewhelper is used) to PHP classes, slowing down the template building.
-
-
 
 ## Install Tool
 
@@ -55,6 +53,23 @@ https://docs.typo3.org/m/typo3/reference-coreapi/master/en-us/ApiOverview/Cachin
 
 
 ## TYPO3 Backend
+### TSConfig: TCEMAIN.clearCacheCmd
++ Usually used to automatically clear caches for configured pages, when editing records on another page in the backend. (like news records in a sysfolder)
+Can be configured with `all` or `pages` to automatically clear **all** caches for every single page. Use this with care. 
+
+### pages.no_cache
++ Before TYPO3 9, it was possible to disable the cache for a page record with the db field `no_cache` (Even for editors). This can heavily affect the CPU load and performance of the website and should be avoided. 
+
+### Mount points
++ Mount points generally are a bad idea (duplicate content), but, if heavily used, can also lead to a lot of db load due to many recursions. 
+
+### Log Tables.
++ Tables like `sys_log`, `sys_history`, etc can grow very large with time and create a bottleneck in the db. Make sure to create a job that regularly truncates old records from these tables. (like the cleanup-scheduler tasks)	
++ Especially deprecation logs should never be enabled on production systems, as they tend to grow very quickly. Even after fixing all the deprecation warnings in your extensions, you will usually end up with lots of deprecation warnings from third-party extensions that you cannot simply fix (which often happen because these extensions need to support a wide variety of TYPO3 versions). You can disable the deprecation log in TYPO3 9 in your `ext_localconf.php` with the following code:
+
+``` php
+$GLOBALS['TYPO3_CONF_VARS']['LOG']['TYPO3']['CMS']['deprecations']['writerConfiguration'][\TYPO3\CMS\Core\Log\LogLevel::NOTICE] = [];
+```
 
 
 ## TypoScript
