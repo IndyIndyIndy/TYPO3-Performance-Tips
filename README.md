@@ -35,6 +35,9 @@ https://docs.typo3.org/m/typo3/reference-coreapi/master/en-us/ApiOverview/Cachin
 ### $GLOBALS['TSFE']->set_no_cache()
 + Make sure, that your extensions are not using `$GLOBALS['TSFE']->set_no_cache()` everywhere, as this will completely disable the caching. (often seen in really old extensions during a TYPO3 Upgrade)
 
+### Frontend search
++ Simple search solutions like `EXT:indexed_search` are only viable for smaller projects. - For providing a scalable and high-performance search (and many advanced search features) use a specialiced search platform like `Elasticsearch` or `Solr`.  
+
 ____
 
 ## Extbase ORM & Doctrine
