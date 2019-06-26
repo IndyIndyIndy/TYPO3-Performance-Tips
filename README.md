@@ -164,7 +164,7 @@ The adminpanel can help with analyzing some performance bottlenecks in your webs
 
 ### Install
 + `composer require typo3/cms-adminpanel`
-+ Install extension `adminpanel`.
++ Install the extension `adminpanel`.
 + Place `config.admPanel = 1` in your TypoScript Setup.
 
 ### Usage
@@ -175,7 +175,7 @@ The adminpanel can help with analyzing some performance bottlenecks in your webs
 
 ### Finding \*_INT objects
 + `composer require christianessl/adminpanel_int`
-+ Install extension `adminpanel_int`.
++ Install the extension `adminpanel_int`.
 + A new tab in the `Info module` will appear which lists you the Typoscript of all \*_INT objects on the page, which makes it easier for you, to search for the source in your code. These can also include uncached Extbase plugins.
 + You can also you the `TypoScript Object Browser` in the `Template` module to search for any occurences (or other keywords like `no_cache`).
 
