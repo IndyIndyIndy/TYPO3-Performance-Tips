@@ -85,6 +85,9 @@ ____
 + Optimize your MySQL/MariaDB indices, **especially** for tables that are expected to handle large amounts of data.
 A short overview for how to use indices: https://de.slideshare.net/myxplain/mysql-indexing-best-practices-for-mysql
 
+### PHP FPM
++ Consider switching to `PHP FPM` (either Apache or nginx) to better handle large amounts of requests and other performance improvements compared to Apache `mod_php` module. 
+
 ____
 
 ## TYPO3 Backend
