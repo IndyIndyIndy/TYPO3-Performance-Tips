@@ -5,7 +5,7 @@ ____
 
 ## Extension Development
 ### Caching Extbase Plugins
-+ When configuring an Extbase plugin, you can specify the allowed Controller actions as well as which actions should not be cached at all. (which will internally create a `USER_INT` object in TYPO3):
++ When configuring an Extbase plugin, you can specify the allowed Controller actions andwhich actions should not be cached at all. (which will internally create a `USER_INT` object in TYPO3):
 
 ``` php
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
@@ -21,50 +21,51 @@ ____
 );
 ```
 + I often stumble upon plugin configurations, that were initially set up as completely uncached for each action during development and never adapted after that. If your action doesn’t involve server-side user interaction (or something similar), it is probably better off cached.
-+ Sometimes it can be useful to deliver a completely cached web page and load uncached parts of the page via ajax. (The tradeoff would be more http requests in the frontend)
-+ If your action needs to be uncached, but also contains computing-intensive parts, that can be cached, consider using the caching framework to cache and fetch these parts from a CacheBackend. 
++ Sometimes it can help to deliver a completely cached web page and load the uncached parts of the page via ajax. (The tradeoff would be more http requests in the frontend)
++ If your action really needs to be uncached, but also contains computing-intensive parts, that can be cached, consider using the caching framework to cache and fetch these parts from a CacheBackend. 
 + See: https://docs.typo3.org/typo3cms/CoreApiReference/ApiOverview/CachingFramework/Developer/Index.html?highlight=cache
 
 ### Caching Framework
-+ By default, many caching tables (like `extbase_datamapfactory_datamap`, `extbase_reflection`, `cf_*`, …) are stored in the default DB connection (usually MariaDB/MySQL). In larger projects with fast growing cache tables, to switch to a `RedisBackend` with reasonable amounts of memory assigned to redis.
++ By default, many caching tables (like `extbase_datamapfactory_datamap`, `extbase_reflection`, `cf_*`, …) are stored in the default DB connection (usually MariaDB/MySQL) configured in TYPO3. In larger projects with fast growing cache tables, consider switching to a `RedisBackend` with reasonable amounts of memory assigned for Redis.
 + There are several other Caching Backends available (`Typo3DatabaseBackend`, `MemcachedBackend`, `ApcBackend`, and others as well as the possibility to implement your own). 
-+ On Linux servers with newer file systems and SSDs, even using a file based CacheBackend could possibly improve the performance compared to the default `Typo3DatabaseBackend`.
++ On Linux servers with newer file systems and SSDs, even using a file based CacheBackend could possibly be faster compared to the default `Typo3DatabaseBackend`.
 + The official documentation provides detailled information on how and when to use them and how to properly configure the underlying mechanisms:
 https://docs.typo3.org/m/typo3/reference-coreapi/master/en-us/ApiOverview/CachingFramework/FrontendsBackends/Index.html#cache-backends
 
 ### $GLOBALS['TSFE']->set_no_cache()
-+ Make sure, that your extensions are not using `$GLOBALS['TSFE']->set_no_cache()` everywhere, as this will completely disable the caching. (often seen in really old extensions during a TYPO3 Upgrade)
++ Make sure, that your extensions are not using `$GLOBALS['TSFE']->set_no_cache()` everywhere, as this will completely disable the caching. (Often seen in really old extensions during a TYPO3 Upgrade)
 
 ____
 
 ## Extensions
 ### Frontend search
-+ Simple search solutions like `EXT:indexed_search` are only viable for smaller projects. - For providing a scalable and high-performance search (and many advanced search features) use a specialiced search platform like `Elasticsearch` or `Solr`.  
++ Simple search solutions like `EXT:indexed_search` are only viable for smaller projects. - For providing a scalable and high-performance search (and to benefit from many other advanced search features) use a search platform like `Elasticsearch` or `Solr`.  
 
 ## EXT:staticfilecache
-+ For cached pages, that require no user interaction, you can use the `EXT:staticfilecache` to drastically improve the performance. It creates static html files of the pages and advises the server via mod_rewrite rule (nginx configurations also exist) to redirect to the static version of the page. This means, that PHP and TYPO3 are never executed in the frontend.
++ For cached pages, that require no user interaction, you can use the `EXT:staticfilecache` to drastically improve the performance. It creates static html files of the pages and advises the server via simple mod_rewrite rules (nginx configurations also exist) to show the static version of the page without ever executing PHP and TYPO3 in the frontend.
 
 ## EXT:image_autoresize
-+ Use `EXT:image_autoresize` to automatically resize compress image files upon upload via the TYPO3 Backend. This avoids  large, unoptimized image files accidentally ending up in the frontend.
++ Use `EXT:image_autoresize` to automatically resize compress image files upon upload via the TYPO3 Backend. This avoids  large, unoptimized image files accidentally ending up in the frontend, in case an editor forgets to optimize their images before uploading.
 
 ____
 
 ## Extbase ORM & Doctrine
 ### Eager loading and lazy loading
-+ There are two opposing ways for optimizing the fetching of data objects. - Lazy Loading and Eager Loading with their pros and cons.
-+ Lazy loading is achieved in TYPO3 Extbase by adding the annotation `@TYPO3\CMS\Extbase\Annotation\ORM\Lazy` to a property in your model. This means, that the underlying objects are not automatically fetched, when the parent object is created by the ORM. This is improves performance, if your object has many children objects, but you do not need to initally access them. Lazy Loading instead adds a “proxy” class as a placeholder that automatically fetches the objects once you try to access them (a new DB request). Depending on the way you use and access your objects, this means switch out a single db request with multiple joins with many individual requests, leading to much slower performance. This is a case, where Eager Loading (fetch all relations at once) would be a better choice. 
++ There are two opposing ways for optimizing the fetching of data objects in an ORM. - Lazy Loading and Eager Loading with their pros and cons.
++ Lazy loading is achieved in TYPO3 Extbase by adding the annotation `@TYPO3\CMS\Extbase\Annotation\ORM\Lazy` to the property in your model that should be lazy loaded. This means, that the underlying objects are not automatically fetched, when the parent object is fetched/created by the ORM. This is improves performance, if your object has many children objects and lots of relations, but you do not need to initally access them all the time. Lazy Loading instead adds a “proxy” class as a placeholder that automatically fetches the objects once you try to access them (which menas a new DB request). 
++ Depending on the way you use and access your objects (imagine iterating through all the lazy loaded objects in a for loop), this means switch out a single db request with multiple joins with many individual requests, leading to much slower performance. This is a case, where Eager Loading (fetch all relations at once) would be a better choice. 
 
 ### Extbase ORM vs Doctrine Querybuilder
-+ The usage of Extbase repositories with its Object Relational Mapping and DDD design principles can be a very convenient way to handle data objects and quickly code and create a running project in a well-structured way. However, using an ORM and having to build the data objects with all its complex relationships always means a performance tradeoff. If domain objects are not needed and performance critical data handling is required (like import/exports of large data sets), you should rather use the Doctrine Querybuilder for direct db requests or the TYPO3 Core Engine.
++ The usage of Extbase repositories with its Object Relational Mapping and DDD design principles can be a very convenient and easy way to handle data objects, quickly create code and create a running project in a well-structured way. However, using an ORM, and its need to build all the data objects with all its complex relationships in the background, always means a performance tradeoff. If domain objects are not needed and performance critical data handling is required (like import/exports of large data sets), you should rather use the Doctrine Querybuilder for direct db access or the TYPO3 Core Engine.
 
 ### Indices for orderBy fields
-+ Look at the `$defaultOrderings` array in your Extbase repositories. These db fields could probably benefit from db indices (configured in your ext_tables.sql).
++ Look at the `$defaultOrderings` array in your Extbase repositories. These db fields could probably benefit from db indices to optimize db performance (configured in your ext_tables.sql).
 
 ____
 
 ## Fluid
 ### Compilable Viewhelpers
-+ Make sure your custom Viewhelpers are using the `CompilableInterface`. This makes the Viewhelper static, avoids the instantiation of many instances of the viewhelper class (which can easily happening if it is placed inside a <f:for>-loop for instance), improving the performance of the template parsing.
++ Make sure your custom Viewhelpers are using the `CompilableInterface`, if possible. This makes the Viewhelper static, avoids the instantiation of many instances of the viewhelper class (which can easily happen if it is placed inside a <f:for>-loop) and improves the performance of the template parsing.
 
 ### cache.disable ViewHelper
 + Beware of the ViewHelper `<f:cache.disable />`. If used, it will disable the caching and compiling of the complete Fluid template (not just the single one where the Viewhelper is used) to PHP classes, slowing down the template building.
@@ -76,7 +77,7 @@ ____
 + If set to `true` and a page request in the frontend fails due to a cHash comparison fail (the calculated chash does not match the actual get parameters in the url), TYPO3 will trigger a 404 error. This is the recommended setting, as with `false` TYPO3 would show the page instead with no caching. You should rather fix your urls if cHash errors occur on the page.
 
 ### [FE][disableNoCacheParameter]
-+ If set to `true`, the infamous `&no_cache=1` will do nothing at all, if present in any url (Check your code, if this change doesn't break anything).
++ If set to `true`, the infamous `&no_cache=1` will do nothing at all, if present in any url (Check your code, that this change doesn't break anything).
 
 ____
 
