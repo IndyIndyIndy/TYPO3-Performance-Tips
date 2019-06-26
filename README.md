@@ -78,6 +78,9 @@ ____
 ### Opcache
 + Check if Opcache is enabled in the phpinfo module. (Some cheap hostings completely disable this and other Bytecode caches and require users to upgrade their hosting agreement to enable them)
 
+## Server Infrastructure
++ For larger projects with many visitors, it could be a good idea to invest in multiple servers with a Load Balancer. (which also improves the uptime)
+
 ____
 
 ## TYPO3 Backend
