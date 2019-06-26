@@ -35,9 +35,14 @@ https://docs.typo3.org/m/typo3/reference-coreapi/master/en-us/ApiOverview/Cachin
 ### $GLOBALS['TSFE']->set_no_cache()
 + Make sure, that your extensions are not using `$GLOBALS['TSFE']->set_no_cache()` everywhere, as this will completely disable the caching. (often seen in really old extensions during a TYPO3 Upgrade)
 
+____
+
+## Extensions
 ### Frontend search
 + Simple search solutions like `EXT:indexed_search` are only viable for smaller projects. - For providing a scalable and high-performance search (and many advanced search features) use a specialiced search platform like `Elasticsearch` or `Solr`.  
 
+## EXT:staticfilecache
++ For cached pages, that require no user interaction, you can use the `EXT:staticfilecache` to drastically improve the performance. It creates static html files of the pages and advises the server via mod_rewrite rule (nginx configurations also exist) to redirect to the static version of the page. This means, that PHP and TYPO3 are never executed in the frontend.
 ____
 
 ## Extbase ORM & Doctrine
