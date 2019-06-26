@@ -43,6 +43,10 @@ ____
 
 ## EXT:staticfilecache
 + For cached pages, that require no user interaction, you can use the `EXT:staticfilecache` to drastically improve the performance. It creates static html files of the pages and advises the server via mod_rewrite rule (nginx configurations also exist) to redirect to the static version of the page. This means, that PHP and TYPO3 are never executed in the frontend.
+
+## EXT:image_autoresize
++ Use `EXT:image_autoresize` to automatically resize compress image files upon upload via the TYPO3 Backend. This avoids  large, unoptimized image files accidentally ending up in the frontend.
+
 ____
 
 ## Extbase ORM & Doctrine
