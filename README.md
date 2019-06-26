@@ -83,20 +83,20 @@ ____
 
 ## Server / Database
 ### LIKE ‘%FOOBAR’
-+ Please, for everything that is good, do not use a statment like `LIKE ‘%FOOBAR’` in your sql query. This will do a full db scan and not scale at all.
++ Please, for everything that is good, do not use a statment like `LIKE ‘%FOOBAR’` in your sql queries. This will do a full db scan and not scale at all.
 
 ### Opcache
-+ Check if Opcache is enabled in the phpinfo module. (Some cheap hostings completely disable this and other Bytecode caches and require users to upgrade their hosting agreement to enable them)
++ Check that Opcache is enabled in the phpinfo module. Some cheap hostings completely disable it and other Bytecode caches and require users to upgrade their hosting agreement to enable them.
 
 ## Server Infrastructure
-+ For larger projects with many visitors, it could be a good idea to invest in multiple servers with a Load Balancer. (which also improves the uptime)
++ For larger projects with many visitors, it could be a good idea to invest in multiple servers with a Load Balancer. (Which also improves the uptime of the website)
 
 ### DB Indices
-+ Optimize your MySQL/MariaDB indices, **especially** for tables that are expected to handle large amounts of data.
++ Optimize your MySQL/MariaDB indices, **especially** for tables that are expected to handle large amounts of data. The `EXPLAIN` statement can help with analyzing your queries as well as the `Debug panel` in the `TYPO3 Adminpanel`.
 A short overview for how to use indices: https://de.slideshare.net/myxplain/mysql-indexing-best-practices-for-mysql
 
 ### PHP FPM
-+ Consider switching to `PHP FPM` (either Apache or nginx) to better handle large amounts of requests and other performance improvements compared to Apache `mod_php` module. 
++ Consider switching to `PHP FPM` (either on Apache or nginx) to better handle large amounts of requests and for other performance improvements compared to the Apache `mod_php` module. 
 
 ____
 
@@ -113,7 +113,7 @@ Can be configured with `all` or `pages` to automatically clear **all** caches fo
 
 ### Log Tables.
 + Tables like `sys_log`, `sys_history`, etc can grow very large with time and create a bottleneck in the db. Make sure to create a job that regularly truncates old records from these tables. (like the cleanup-scheduler tasks)	
-+ Especially deprecation logs should never be enabled on production systems, as they tend to grow very quickly. Even after fixing all the deprecation warnings in your extensions, you will usually end up with lots of deprecation warnings from third-party extensions that you cannot simply fix (which often happen because these extensions need to support a wide variety of TYPO3 versions). 
++ Especially deprecation logs should never be enabled on production systems, as they tend to grow very quickly. Even after fixing all the deprecation warnings in your own extensions, you will usually end up with lots of deprecation warnings from third-party extensions that you cannot simply fix (which often happen because these extensions need to support a wide variety of TYPO3 versions). 
 You can disable the deprecation log in TYPO3 9 in your `ext_localconf.php` with the following code:
 
 ``` php
@@ -123,7 +123,7 @@ ____
 
 ## TypoScript
 ### config.no_cache = 1
-+ This well-known setting completely disabled caching in the frontend. Usage of this option should be discouraged, but still, I often see this option applied in older TYPO3 websites. (After the customer complained about the horrible performance of the website)
++ This well-known setting completely disables caching in the frontend. Usage of this option is discouraged, but still, I often see this option applied in older TYPO3 websites. (After the customer complained about the horrible performance of the website)
 + You can hide this option behind TS Conditions like `[applicationContext == "Development"]`, to only disable caching on development instances, but even then this can lead to easily overlooked bugs, when only testing features uncached, that, in production, should be cached.
 
 ### config.linkVars 
@@ -150,17 +150,17 @@ https://docs.typo3.org/m/typo3/reference-typoscript/master/en-us/Setup/Config/In
 + See: https://docs.typo3.org/m/typo3/reference-typoscript/master/en-us/Setup/Config/Index.html#sendcacheheaders
 
 ### Typoscript Conditions 
-+ Each single TypoScript Condition means a new cache variant of the page. (TYPO3 will create one cache for the page, if the condition is met and one if not.) To avoid bloating up the cache, use such conditions with care and remove any unnecessary condition stubs in your TypoScript, that are not in use.
++ Each single TypoScript Condition means a new cache variant of the page (TYPO3 will create one cache for the page, if the condition is met and one if not). To avoid bloating up the cache, use such conditions with care and remove any unnecessary condition stubs in your TypoScript, that are not in use.
 
 ### COA_INT / USER_INT
-+ Try to limit your \*_INT objects in TypoScript. These are basically uncached components in your website. When present, TYPO3 basically first creates a static (cached) version of the page and inserts placeholder comments in the html output that mark all locations, where a \*_INT object is present. After that, each single of these objects is created from scratch (uncached). This considerably slows down page generation compared to a fully cached page.
-+ Be especially careful, when using \*_INT objects inside a `FLUIDTEMPLATE`. If you place such an object in the section `page.10.variables`, this would **apply the uncached object for every single page, even if it is not actually used in the fluid template**, slowing down every single page in your frontend.
++ Try to limit your \*_INT objects in TypoScript. These are basically uncached components in your website. When present, TYPO3  first creates a static (cached) version of the page and inserts placeholder comments in the html output that mark all locations, where a \*_INT object is present. After that, each single of these objects is created from scratch (uncached). This considerably slows down page generation compared to a fully cached page.
++ Be especially careful, when using \*_INT objects inside a `FLUIDTEMPLATE`. If you place such an object in the section `page.10.variables`, this would **apply the uncached object for every single page, even if it is not actually used in the Fluid template**, unnecessarily slowing down every single page in your frontend.
 
 ____
 
 ## Using the Adminpanel
 ### Summary
-The adminpanel can help with analyzing some performance bottlenecks in your website, like finding \*_INT objects or easily analyzing DB queries on a page. 
+The adminpanel can help with analyzing some performance bottlenecks in your website, like finding \*_INT objects or quickly analyzing all DB queries on a page. 
 
 ### Install
 + `composer require typo3/cms-adminpanel`
@@ -168,9 +168,9 @@ The adminpanel can help with analyzing some performance bottlenecks in your webs
 + Place `config.admPanel = 1` in your TypoScript Setup.
 
 ### Usage
-+ An icon at the lower right in the frontend appear, with which you can open the adminpanel.
++ An icon at the lower right in the frontend appears, with which you can open the adminpanel.
 + The `Info module` shows you the server-side rendering time of the page in milliseconds and if the current page was cached.
-+ The label `Count of USER_INT objects` shows you the admount of \*_INT objects on the page. If at least one is present, the page is not cached. Try to avoid these unless absolutely necessary.
++ The label `Count of USER_INT objects` shows you the amount of \*_INT objects on the page. If at least one is present, the page is not cached. Try to avoid these unless absolutely necessary.
 + In the `Debug module` you can see a list of all DB requests and how much time every single one needed for the current page. This can help you find bottlenecks in the DB and to get information, which table fields could benefit from an index.
 
 ### Finding \*_INT objects
