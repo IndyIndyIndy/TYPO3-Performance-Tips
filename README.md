@@ -81,6 +81,10 @@ ____
 ## Server Infrastructure
 + For larger projects with many visitors, it could be a good idea to invest in multiple servers with a Load Balancer. (which also improves the uptime)
 
+### DB Indices
++ Optimize your MySQL/MariaDB indices, **especially** for tables that are expected to handle large amounts of data.
+A short overview for how to use indices: https://de.slideshare.net/myxplain/mysql-indexing-best-practices-for-mysql
+
 ____
 
 ## TYPO3 Backend
@@ -102,7 +106,6 @@ You can disable the deprecation log in TYPO3 9 in your `ext_localconf.php` with 
 ``` php
 $GLOBALS['TYPO3_CONF_VARS']['LOG']['TYPO3']['CMS']['deprecations']['writerConfiguration'][\TYPO3\CMS\Core\Log\LogLevel::NOTICE] = [];
 ```
-
 ____
 
 ## TypoScript
