@@ -98,6 +98,10 @@ A short overview for how to use indices: https://de.slideshare.net/myxplain/mysq
 ### PHP FPM
 + Consider switching to `PHP FPM` (either on Apache or nginx) to better handle large amounts of requests and for other performance improvements compared to the Apache `mod_php` module. 
 
+### PHP Profiling
++ You can use a PHP profiler like `xdebug` or `blackfire.io` (paid service) to find performance bottlenecks in your PHP code.
++ A short introduction for debugging TYPO3 with xdebug and PHPStorm: https://www.youtube.com/watch?v=VtffB0CG1ok
+
 ____
 
 ## TYPO3 Backend
