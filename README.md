@@ -5,7 +5,7 @@ ____
 
 ## Extension Development
 ### Caching Extbase Plugins
-+ When configuring an Extbase plugin, you can specify the allowed Controller actions andwhich actions should not be cached at all. (which will internally create a `USER_INT` object in TYPO3):
++ When configuring an Extbase plugin, you can specify the allowed Controller actions and which actions should not be cached at all. (this will internally create a `USER_INT` object in TYPO3):
 
 ``` php
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
