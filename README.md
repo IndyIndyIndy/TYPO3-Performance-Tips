@@ -1,5 +1,7 @@
 # TYPO3 Performance Tips
-A few tips to optimize and improve the performance in TYPO3 websites
+A few tips to optimize and improve the performance in TYPO3 websites.
+
+This guide is focusing mostly on TYPO3 and server-side performance. To check out frontend performance in general (independent of the used CMS), I recommend reading the 2019 version of the Frontend Performance Checklist from Smashing Magazine: https://www.smashingmagazine.com/2019/01/front-end-performance-checklist-2019-pdf-pages/
 
 ____
 
