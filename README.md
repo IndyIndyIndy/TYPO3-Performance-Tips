@@ -63,6 +63,16 @@ ____
 ### Indices for orderBy fields
 + Look at the `$defaultOrderings` array in your Extbase repositories. These db fields could probably benefit from db indices to optimize db performance (configured in your ext_tables.sql).
 
+### Pagination 
+Pagination in TYPO3 / Extbase is usually implemented with a standard LIMIT/OFFSET SQL query. While these are no problem on smaller data sets, if the table to be queried grows substantially large, the further you try to paginate the records with this pattern, the slower the queries will become. Imagine you have a table with 50.000 rows and paginate far into with: 
+"*SELECT * FROM my_table ORDER BY date LIMIT 40000, 20*". 
+
+What actually happens is, that the db now has to fetch 40.020 records from the table and then drop the first 40.000 to just get the 20 rows that were required. 
+In this case you probably want to use keyset navigation. Instead of paginating with an OFFSET, the rows are fetched by using the last known key (uid) from the previous result set and fetch the next *x* rows after this key. There exist several solutions for keyset pagination and the optimal solution often differs from your used database (because the supported db features differ wildly). For MySQL as an example there exist several solutions, you can look at one here:
+http://allyouneedisbackend.com/blog/2017/09/24/the-sql-i-love-part-1-scanning-large-table/
+
+Downside to keyset pagination: It is'nt that easy to deeply navigate into a specific page (for instance "go to page 20"), because you will likely not now from which key you have to start. But for "infinite loading" (like seen in facebook, twitter, etc.) it is the perfect solution and even provides more stable result. (you won't see a previously fetched record again, if a new record happens to appear at the top)
+
 ____
 
 ## Fluid
