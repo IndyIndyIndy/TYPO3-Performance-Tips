@@ -37,6 +37,9 @@ https://docs.typo3.org/m/typo3/reference-coreapi/master/en-us/ApiOverview/Cachin
 ### $GLOBALS['TSFE']->set_no_cache()
 + Make sure, that your extensions are not using `$GLOBALS['TSFE']->set_no_cache()` everywhere, as this will completely disable the caching. (Often seen in really old extensions during a TYPO3 Upgrade)
 
+### Linking pages
++ There are several ways in TYPO3 to create uris to pages. For instance $cObj->typoLink_URL() or PageRouter::generateUri(). Whenever many urls are created on a page, I recommend using the newer PageRouter. Reason for that is: With the older ways, that utilize the PageLinkBuilder class  (like typolink_URL()), the PageLinkBuilder doesn't know which site the page id belongs to, that you are currently linking. For each single link, the PageLinkBuilder will have to call SiteFinder::getSiteByPageId(), which itself will internally create a new instance of RootLineUtility to first recursively fetch the rootline leading to this page from the db. For EACH single generated link. PageRouter on the other hand will always already be initialized with the site it belongs to, saving manys uperfluous db calls. 
+
 ____
 
 ## Extensions
